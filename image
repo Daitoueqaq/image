@@ -30,7 +30,8 @@ df.loc[df['Sample'].isin([1, 2, 3, 28, 29, 30, 55, 56, 57]), 'Type'] = 0
 df.loc[df['Sample'].isin([4, 5, 6, 31, 32, 33, 58, 59, 60]), 'Type'] = 1
 df.loc[df['Sample'].isin([7, 8, 9, 34, 35, 36, 61, 62, 63]), 'Type'] = 2
 
-
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 df = pd.read_excel('hz1.xlsx')
 df['Time'] = ['0','0','0','0','0','0','0','0','0','20','20','20','20','20','20','20','20','20','60','60','60','60','60','60','60','60','60']
@@ -121,7 +122,7 @@ df.loc[iA, "4HPFBA_mean"] = df.loc[iA, "4H-PFBA"].mean()
 df.loc[iiA, "4HPFBA_mean"] = df.loc[iiA, "4H-PFBA"].mean()
 df.loc[iiiA, "4HPFBA_mean"] = df.loc[iiiA, "4H-PFBA"].mean()
 
-df["3H-PFPrA_mean"] = 0
+df["3HPFPrA_mean"] = 0
 df.loc[iP, "3HPFPrA_mean"] = df.loc[iP, "3H-PFPrA"].mean()
 df.loc[iiP, "3HPFPrA_mean"] = df.loc[iiP, "3H-PFPrA"].mean()
 df.loc[iiiP, "3HPFPrA_mean"] = df.loc[iiiP, "3H-PFPrA"].mean()
@@ -132,13 +133,15 @@ df.loc[iA, "3HPFPrA_mean"] = df.loc[iA, "3H-PFPrA"].mean()
 df.loc[iiA, "3HPFPrA_mean"] = df.loc[iiA, "3H-PFPrA"].mean()
 df.loc[iiiA, "3HPFPrA_mean"] = df.loc[iiiA, "3H-PFPrA"].mean()
 
+df = df.apply(pd.to_numeric, errors='coerce')
 
 fig, ax1 = plt.subplots(figsize=(8, 6))
 color = 'tab:blue'
 ax1.set_xlabel('Time (days)', fontsize=16)
 ax1.set_ylabel('PFOA Concentration (ppm)', color=color, fontsize=16)
-ax1.plot(time, pfoa_concentration, color=color, label='PFOA')
+ax1.plot(df['Time'], df['PFOA_mean'], color=color, label='PFOA')
 ax1.tick_params(axis='y', labelcolor=color, labelsize=14)
+
 ax1.errorbar(time, pfoa_concentration, yerr=pfoa_std, color=color, capsize=4)
 ax2 = ax1.twinx()
 color = 'tab:orange'
