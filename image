@@ -1,36 +1,155 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# sample data
-time = [0, 2, 4, 6, 8, 10, 12]
-pfoa_concentration = [100, 85, 70, 50, 35, 20, 10]
-pfba_concentration = [0, 10, 20, 35, 50, 70, 90]
-pfhxa_concentration = [0, 5, 10, 20, 30, 50, 70]
-tfa_concentration = [0, 1, 5, 10, 20, 30, 40]
+time = [0, 2, 4, 6, 8, 10, 12]; pfoa_concentration = [100, 85, 70, 50, 35, 20, 10]; pfba_concentration = [0, 10, 20, 35, 50, 70, 90]; pfhxa_concentration = [0, 5, 10, 20, 30, 50, 70]; tfa_concentration = [0, 1, 5, 10, 20, 30, 40]
+pfoa_std = [1, 1, 1, 0.5, 0.5, 0.2, 0.1]; pfba_std = [0.5, 0.5, 0.5, 0.3, 0.3, 0.2, 0.1]; pfhxa_std = [0.2, 0.2, 0.2, 0.1, 0.1, 0.05, 0.02]; tfa_std = [0.1, 0.1, 0.1, 0.05, 0.05, 0.03, 0.02]
 
-# standard deviation
-pfoa_std = [1, 1, 1, 0.5, 0.5, 0.2, 0.1]  # example standard deviation values
-pfba_std = [0.5, 0.5, 0.5, 0.3, 0.3, 0.2, 0.1]
-pfhxa_std = [0.2, 0.2, 0.2, 0.1, 0.1, 0.05, 0.02]
-tfa_std = [0.1, 0.1, 0.1, 0.05, 0.05, 0.03, 0.02]
-
-# plot with different y-axes for PFOA and degradation products
 fig, ax1 = plt.subplots(figsize=(8, 6))
-
 color = 'tab:blue'
 ax1.set_xlabel('Time (hours)', fontsize=16)
 ax1.set_ylabel('PFOA Concentration (ppm)', color=color, fontsize=16)
 ax1.plot(time, pfoa_concentration, color=color, label='PFOA')
 ax1.tick_params(axis='y', labelcolor=color, labelsize=14)
 ax1.errorbar(time, pfoa_concentration, yerr=pfoa_std, color=color, capsize=4)
-
 ax2 = ax1.twinx()
-
 color = 'tab:orange'
 ax2.set_ylabel('Degradation Product Concentration (ppm)', color=color, fontsize=16)
 ax2.plot(time, pfba_concentration, color=color, label='PFBA')
 ax2.plot(time, pfhxa_concentration, color='green', label='PFHxA')
 ax2.plot(time, tfa_concentration, color='red', label='TFA')
+ax2.tick_params(axis='y', labelcolor=color, labelsize=14)
+ax2.errorbar(time, pfba_concentration, yerr=pfba_std, color=color, capsize=4)
+ax2.errorbar(time, pfhxa_concentration, yerr=pfhxa_std, color='green', capsize=4)
+ax2.errorbar(time, tfa_concentration, yerr=tfa_std, color='red', capsize=4)
+
+fig.suptitle('PFOA Degradation Products over Time', fontsize=20, y=0.95)
+fig.legend(loc='upper right', fontsize=14)
+plt.tight_layout()
+plt.show()
+df.loc[df['Sample'].isin([1, 2, 3, 28, 29, 30, 55, 56, 57]), 'Type'] = 0
+df.loc[df['Sample'].isin([4, 5, 6, 31, 32, 33, 58, 59, 60]), 'Type'] = 1
+df.loc[df['Sample'].isin([7, 8, 9, 34, 35, 36, 61, 62, 63]), 'Type'] = 2
+
+
+import pandas as pd
+df = pd.read_excel('hz1.xlsx')
+df['Time'] = ['0','0','0','0','0','0','0','0','0','20','20','20','20','20','20','20','20','20','60','60','60','60','60','60','60','60','60']
+df['Type'] = ['P','P','P','E','E','E','A','A','A','P','P','P','E','E','E','A','A','A','P','P','P','E','E','E','A','A','A']
+df["PFOA_mean"] = 0
+iP = (df["Time"] == "0") & (df["Type"] == "P")
+df.loc[iP, "PFOA_mean"] = df.loc[iP, "PFOA"].mean()
+iiP = (df["Time"] == "20") & (df["Type"] == "P")
+df.loc[iiP, "PFOA_mean"] = df.loc[iiP, "PFOA"].mean()
+iiiP = (df["Time"] == "60") & (df["Type"] == "P")
+df.loc[iiiP, "PFOA_mean"] = df.loc[iiiP, "PFOA"].mean()
+iE = (df["Time"] == "0") & (df["Type"] == "E")
+df.loc[iE, "PFOA_mean"] = df.loc[iE, "PFOA"].mean()
+iiE = (df["Time"] == "20") & (df["Type"] == "E")
+df.loc[iiE, "PFOA_mean"] = df.loc[iiE, "PFOA"].mean()
+iiiE = (df["Time"] == "60") & (df["Type"] == "E")
+df.loc[iiiE, "PFOA_mean"] = df.loc[iiiE, "PFOA"].mean()
+iA = (df["Time"] == "0") & (df["Type"] == "A")
+df.loc[iA, "PFOA_mean"] = df.loc[iA, "PFOA"].mean()
+iiA = (df["Time"] == "20") & (df["Type"] == "A")
+df.loc[iiA, "PFOA_mean"] = df.loc[iiA, "PFOA"].mean()
+iiiA = (df["Time"] == "60") & (df["Type"] == "A")
+df.loc[iiiA, "PFOA_mean"] = df.loc[iiiA, "PFOA"].mean()
+
+df["PFHpA_mean"] = 0
+df.loc[iP, "PFHpA_mean"] = df.loc[iP, "PFHpA"].mean()
+df.loc[iiP, "PFHpA_mean"] = df.loc[iiP, "PFHpA"].mean()
+df.loc[iiiP, "PFHpA_mean"] = df.loc[iiiP, "PFHpA"].mean()
+df.loc[iE, "PFHpA_mean"] = df.loc[iE, "PFHpA"].mean()
+df.loc[iiE, "PFHpA_mean"] = df.loc[iiE, "PFHpA"].mean()
+df.loc[iiiE, "PFHpA_mean"] = df.loc[iiiE, "PFHpA"].mean()
+df.loc[iA, "PFHpA_mean"] = df.loc[iA, "PFHpA"].mean()
+df.loc[iiA, "PFHpA_mean"] = df.loc[iiA, "PFHpA"].mean()
+df.loc[iiiA, "PFHpA_mean"] = df.loc[iiiA, "PFHpA"].mean()
+
+df["PFHxA_mean"] = 0
+df.loc[iP, "PFHxA_mean"] = df.loc[iP, "PFHxA"].mean()
+df.loc[iiP, "PFHxA_mean"] = df.loc[iiP, "PFHxA"].mean()
+df.loc[iiiP, "PFHxA_mean"] = df.loc[iiiP, "PFHxA"].mean()
+df.loc[iE, "PFHxA_mean"] = df.loc[iE, "PFHxA"].mean()
+df.loc[iiE, "PFHxA_mean"] = df.loc[iiE, "PFHxA"].mean()
+df.loc[iiiE, "PFHxA_mean"] = df.loc[iiiE, "PFHxA"].mean()
+df.loc[iA, "PFHxA_mean"] = df.loc[iA, "PFHxA"].mean()
+df.loc[iiA, "PFHxA_mean"] = df.loc[iiA, "PFHxA"].mean()
+df.loc[iiiA, "PFHxA_mean"] = df.loc[iiiA, "PFHxA"].mean()
+
+df["PFBA_mean"] = 0
+df.loc[iP, "PFBA_mean"] = df.loc[iP, "PFBA"].mean()
+df.loc[iiP, "PFBA_mean"] = df.loc[iiP, "PFBA"].mean()
+df.loc[iiiP, "PFBA_mean"] = df.loc[iiiP, "PFBA"].mean()
+df.loc[iE, "PFBA_mean"] = df.loc[iE, "PFBA"].mean()
+df.loc[iiE, "PFBA_mean"] = df.loc[iiE, "PFBA"].mean()
+df.loc[iiiE, "PFBA_mean"] = df.loc[iiiE, "PFBA"].mean()
+df.loc[iA, "PFBA_mean"] = df.loc[iA, "PFBA"].mean()
+df.loc[iiA, "PFBA_mean"] = df.loc[iiA, "PFBA"].mean()
+df.loc[iiiA, "PFBA_mean"] = df.loc[iiiA, "PFBA"].mean()
+
+df["PFPrA_mean"] = 0
+df.loc[iP, "PFPrA_mean"] = df.loc[iP, "PFPrA"].mean()
+df.loc[iiP, "PFPrA_mean"] = df.loc[iiP, "PFPrA"].mean()
+df.loc[iiiP, "PFPrA_mean"] = df.loc[iiiP, "PFPrA"].mean()
+df.loc[iE, "PFPrA_mean"] = df.loc[iE, "PFPrA"].mean()
+df.loc[iiE, "PFPrA_mean"] = df.loc[iiE, "PFPrA"].mean()
+df.loc[iiiE, "PFPrA_mean"] = df.loc[iiiE, "PFPrA"].mean()
+df.loc[iA, "PFPrA_mean"] = df.loc[iA, "PFPrA"].mean()
+df.loc[iiA, "PFPrA_mean"] = df.loc[iiA, "PFPrA"].mean()
+df.loc[iiiA, "PFPrA_mean"] = df.loc[iiiA, "PFPrA"].mean()
+
+df["HPFOA_mean"] = 0
+df.loc[iP, "HPFOA_mean"] = df.loc[iP, "H-PFOA"].mean()
+df.loc[iiP, "HPFOA_mean"] = df.loc[iiP, "H-PFOA"].mean()
+df.loc[iiiP, "HPFOA_mean"] = df.loc[iiiP, "H-PFOA"].mean()
+df.loc[iE, "HPFOA_mean"] = df.loc[iE, "H-PFOA"].mean()
+df.loc[iiE, "HPFOA_mean"] = df.loc[iiE, "H-PFOA"].mean()
+df.loc[iiiE, "HPFOA_mean"] = df.loc[iiiE, "H-PFOA"].mean()
+df.loc[iA, "HPFOA_mean"] = df.loc[iA, "H-PFOA"].mean()
+df.loc[iiA, "HPFOA_mean"] = df.loc[iiA, "H-PFOA"].mean()
+df.loc[iiiA, "HPFOA_mean"] = df.loc[iiiA, "H-PFOA"].mean()
+
+df["4HPFBA_mean"] = 0
+df.loc[iP, "4HPFBA_mean"] = df.loc[iP, "4H-PFBA"].mean()
+df.loc[iiP, "4HPFBA_mean"] = df.loc[iiP, "4H-PFBA"].mean()
+df.loc[iiiP, "4HPFBA_mean"] = df.loc[iiiP, "4H-PFBA"].mean()
+df.loc[iE, "4HPFBA_mean"] = df.loc[iE, "4H-PFBA"].mean()
+df.loc[iiE, "4HPFBA_mean"] = df.loc[iiE, "4H-PFBA"].mean()
+df.loc[iiiE, "4HPFBA_mean"] = df.loc[iiiE, "4H-PFBA"].mean()
+df.loc[iA, "4HPFBA_mean"] = df.loc[iA, "4H-PFBA"].mean()
+df.loc[iiA, "4HPFBA_mean"] = df.loc[iiA, "4H-PFBA"].mean()
+df.loc[iiiA, "4HPFBA_mean"] = df.loc[iiiA, "4H-PFBA"].mean()
+
+df["3H-PFPrA_mean"] = 0
+df.loc[iP, "3HPFPrA_mean"] = df.loc[iP, "3H-PFPrA"].mean()
+df.loc[iiP, "3HPFPrA_mean"] = df.loc[iiP, "3H-PFPrA"].mean()
+df.loc[iiiP, "3HPFPrA_mean"] = df.loc[iiiP, "3H-PFPrA"].mean()
+df.loc[iE, "3HPFPrA_mean"] = df.loc[iE, "3H-PFPrA"].mean()
+df.loc[iiE, "3HPFPrA_mean"] = df.loc[iiE, "3H-PFPrA"].mean()
+df.loc[iiiE, "3HPFPrA_mean"] = df.loc[iiiE, "3H-PFPrA"].mean()
+df.loc[iA, "3HPFPrA_mean"] = df.loc[iA, "3H-PFPrA"].mean()
+df.loc[iiA, "3HPFPrA_mean"] = df.loc[iiA, "3H-PFPrA"].mean()
+df.loc[iiiA, "3HPFPrA_mean"] = df.loc[iiiA, "3H-PFPrA"].mean()
+
+
+fig, ax1 = plt.subplots(figsize=(8, 6))
+color = 'tab:blue'
+ax1.set_xlabel('Time (days)', fontsize=16)
+ax1.set_ylabel('PFOA Concentration (ppm)', color=color, fontsize=16)
+ax1.plot(time, pfoa_concentration, color=color, label='PFOA')
+ax1.tick_params(axis='y', labelcolor=color, labelsize=14)
+ax1.errorbar(time, pfoa_concentration, yerr=pfoa_std, color=color, capsize=4)
+ax2 = ax1.twinx()
+color = 'tab:orange'
+ax2.set_ylabel('Degradation Product Concentration (ppm)', color=color, fontsize=16)
+ax2.plot(new_df.Time, PFHpA_mean, color=color, label='PFHpA')
+ax2.plot(Time, PFHxA_mean, color='green', label='PFHxA')
+ax2.plot(Time, PFBA_mean, color='red', label='PFBA')
+ax2.plot(Time, PFPrA_mean, color='green', label='PFPrA')
+ax2.plot(Time, HPFOA_mean, color='green', label='HPFOA')
+ax2.plot(Time, 4HPFBA_mean, color='green', label='4HPFBA')
+ax2.plot(Time, 3HPFPrA_mean, color='green', label='3HPFPrA')
 ax2.tick_params(axis='y', labelcolor=color, labelsize=14)
 ax2.errorbar(time, pfba_concentration, yerr=pfba_std, color=color, capsize=4)
 ax2.errorbar(time, pfhxa_concentration, yerr=pfhxa_std, color='green', capsize=4)
