@@ -1,0 +1,42 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# sample data
+time = [0, 2, 4, 6, 8, 10, 12]
+pfoa_concentration = [100, 85, 70, 50, 35, 20, 10]
+pfba_concentration = [0, 10, 20, 35, 50, 70, 90]
+pfhxa_concentration = [0, 5, 10, 20, 30, 50, 70]
+tfa_concentration = [0, 1, 5, 10, 20, 30, 40]
+
+# standard deviation
+pfoa_std = [1, 1, 1, 0.5, 0.5, 0.2, 0.1]  # example standard deviation values
+pfba_std = [0.5, 0.5, 0.5, 0.3, 0.3, 0.2, 0.1]
+pfhxa_std = [0.2, 0.2, 0.2, 0.1, 0.1, 0.05, 0.02]
+tfa_std = [0.1, 0.1, 0.1, 0.05, 0.05, 0.03, 0.02]
+
+# plot with different y-axes for PFOA and degradation products
+fig, ax1 = plt.subplots(figsize=(8, 6))
+
+color = 'tab:blue'
+ax1.set_xlabel('Time (hours)', fontsize=16)
+ax1.set_ylabel('PFOA Concentration (ppm)', color=color, fontsize=16)
+ax1.plot(time, pfoa_concentration, color=color, label='PFOA')
+ax1.tick_params(axis='y', labelcolor=color, labelsize=14)
+ax1.errorbar(time, pfoa_concentration, yerr=pfoa_std, color=color, capsize=4)
+
+ax2 = ax1.twinx()
+
+color = 'tab:orange'
+ax2.set_ylabel('Degradation Product Concentration (ppm)', color=color, fontsize=16)
+ax2.plot(time, pfba_concentration, color=color, label='PFBA')
+ax2.plot(time, pfhxa_concentration, color='green', label='PFHxA')
+ax2.plot(time, tfa_concentration, color='red', label='TFA')
+ax2.tick_params(axis='y', labelcolor=color, labelsize=14)
+ax2.errorbar(time, pfba_concentration, yerr=pfba_std, color=color, capsize=4)
+ax2.errorbar(time, pfhxa_concentration, yerr=pfhxa_std, color='green', capsize=4)
+ax2.errorbar(time, tfa_concentration, yerr=tfa_std, color='red', capsize=4)
+
+fig.suptitle('PFOA Degradation Products over Time', fontsize=20, y=0.95)
+fig.legend(loc='upper right', fontsize=14)
+plt.tight_layout()
+plt.show()
