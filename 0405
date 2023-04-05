@@ -1,0 +1,81 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Load the data from your CSV or Excel file
+data = pd.read_csv('hz2.csv')
+
+# Extract the degradation product columns
+degradation_products = ['PFOA', 'PFHpA', 'PFHxA', 'PFBA', 'PFPrA', 'H-PFOA', '4H-PFBA', '3H-PFPrA']
+
+dfs = []
+for product in degradation_products:
+    df = data[['Time', 'Group', product]].copy()
+    df.rename(columns={product: 'Concentration'}, inplace=True)
+    df['Degradation Product'] = product
+    dfs.append(df)
+
+df_all = pd.concat(dfs)
+
+# Create the plot
+fig, axs = plt.subplots(ncols=3, figsize=(15, 5))
+for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
+    ax = axs[i]
+    ax2 = ax.twinx()  # Create a second y-axis
+    ax2.spines['right'].set_position(('axes', 1.0))  # Align the second y-axis to the right side of the plot
+    for j, product in enumerate(degradation_products):
+        df_group = df_all[(df_all['Group'] == group) & (df_all['Degradation Product'] == product)]
+        if product == 'PFOA':
+            ax.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
+            ax.set_ylim(50, 125)  # Set the range for the left y-axis
+            ax.set_ylabel('PFOA Concentration (ng/mL)')  # Set the label for the left y-axis
+        else:
+            ax2.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
+            if group == 'Pure' and product == 'PFHpA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [21.49910423, 25.14949361, 21.91048354, 25.48776353, 25.53018299, 27.73544044, 23.15690379, 27.59022382, 26.50276041], color='tab:orange', marker='x',s=10)
+            if group == 'Pure' and product == 'PFHxA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [182.7246807, 169.6915854, 148.875946, 175.027736, 177.9948535, 162.0940709, 154.2934574, 194.3728312, 167.3773456], color='tab:green', marker='x',s=10) 
+            if group == 'Pure' and product == 'PFBA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [21.49910423, 13.66939759, 10.14088578, 9.046015198, 5.762778521, 6.124061399, 8.307773412, 6.145948837, 8.510292034], color='tab:red', marker='x',s=10)              
+            if group == 'Pure' and product == 'PFPrA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0.220478383, 0, 0, 0.747344015, 0.128665945, 0.960559075, 0.462469813, 0.1523273, 0.603498556], color='tab:purple', marker='x',s=10)                
+            if group == 'Pure' and product == 'H-PFOA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [1.306048041, 0.994862072, 1.091902325, 1.55409165, 2.229262996, 1.566674513, 0.462914729, 1.739992499, 1.776117251], color='tab:brown', marker='x',s=10)                
+            if group == 'Pure' and product == '4H-PFBA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 3.500977164, 0, 0, 0.774871539, 1.238839559, 1.286226306], color='tab:pink', marker='x',s=10)     
+            if group == 'Pure' and product == '3H-PFPrA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 10.36633249, 0, 0, 0, 74.37451759, 0.417362578, 205.1312252], color='tab:gray', marker='x',s=10) 
+            if group == 'Enrichment' and product == 'PFHpA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [28.88303348, 26.62805557, 30.96036382, 26.70823378, 31.4560471, 21.26002277, 34.53359815, 26.63281031, 25.35788949], color='tab:orange', marker='x',s=10)
+            if group == 'Enrichment' and product == 'PFHxA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [170.7070685, 159.5418085, 180.0218348, 181.6209826, 193.4792512, 124.0400006, 219.802035, 156.5606375, 155.5045126], color='tab:green', marker='x',s=10) 
+            if group == 'Enrichment' and product == 'PFBA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [14.38843533, 13.33975907, 29.30492031, 8.433492574, 12.83272209, 10.26138517, 7.548379576, 7.924846422, 7.579383118], color='tab:red', marker='x',s=10)              
+            if group == 'Enrichment' and product == 'PFPrA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0.219112263, 0.305385859, 0.791275633, 0, 0.202332182, 0.554354422, 1.780568947, 1.04967452, 1.013702351], color='tab:purple', marker='x',s=10)                
+            if group == 'Enrichment' and product == 'H-PFOA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [1.940699997, 2.841592298, 3.121115297, 1.162401703, 1.660617561, 3.645044185, 1.410856967, 2.996745501, 1.373056193], color='tab:brown', marker='x',s=10)                
+            if group == 'Enrichment' and product == '4H-PFBA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [1.487731432, 1.256862168, 0, 0.849340773, 2.069072004, 0, 0, 0.094023094, 2.146382734], color='tab:pink', marker='x',s=10)     
+            if group == 'Enrichment' and product == '3H-PFPrA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 0, 0, 227.9611109, 15.78093946, 120.8507167, 164.7900019], color='tab:gray', marker='x',s=10)
+            if group == 'AQDS' and product == 'PFHpA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [22.97791682, 24.90048011, 26.38192143, 29.14161351, 26.44887788, 31.8739579, 44.93719509, 31.71536585, 30.03376927], color='tab:orange', marker='x',s=10)
+            if group == 'AQDS' and product == 'PFHxA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [176.5458061, 161.7882043, 176.5757926, 192.6038196, 171.0329233, 184.5128614, 172.8608506, 177.695639, 179.4852399], color='tab:green', marker='x',s=10) 
+            if group == 'AQDS' and product == 'PFBA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [3.215603423, 8.799895589, 8.838233583, 10.7633994, 4.129218715, 53.92614625, 7.019538891, 4.799474428, 78.93012465], color='tab:red', marker='x',s=10)              
+            if group == 'AQDS' and product == 'PFPrA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0.130330197, 0.189011487, 0.152643337, 0, 0.536556453, 0.253567231, 0.413564646], color='tab:purple', marker='x',s=10)                
+            if group == 'AQDS' and product == 'H-PFOA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0.62377701, 0.636853633, 2.607838163, 0.966427423, 1.053964402, 0.262301122, 0.207937508, 1.014429362, 0.568240796], color='tab:brown', marker='x',s=10)                
+            if group == 'AQDS' and product == '4H-PFBA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [3.928614804, 1.29738275, 0.930636414, 1.434104449, 0.921607422, 8.651712319, 5.667095433, 17.46424628, 78.93012465], color='tab:pink', marker='x',s=10)     
+            if group == 'AQDS' and product == '3H-PFPrA':
+                ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 0.409865801, 0, 0.101399309, 18.49859268, 0, 0], color='tab:gray', marker='x',s=10) 
+    ax.set_xlabel('Time (days)')
+    ax.set_title(group)
+    ax.legend(loc='upper left')
+    ax2.legend(loc='upper right')
+
+plt.tight_layout()
+plt.show()
