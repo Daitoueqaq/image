@@ -18,6 +18,15 @@ df_all = pd.concat(dfs)
 
 # Create the plot
 fig, axs = plt.subplots(ncols=3, figsize=(15, 5))
+box_data_p = [[116.1543409, 116.3089976, 109.3024482], [121.2715271, 125.811977, 116.6957444], [113.8182392, 137.3922362, 116.7130628]]
+box_pos = [0, 20, 60]
+axs[0].boxplot(box_data_p, positions=box_pos, widths=5)
+box_data_e = [[112.8373191, 116.2753611, 131.5654502], [128.5351501, 143.8958003, 89.56978785], [144.1414795, 88.54145558, 92.6838361]]
+box_pos = [0, 20, 60]
+axs[1].boxplot(box_data_e, positions=box_pos, widths=5)
+box_data_a = [[125.4104137, 113.8948141, 126.5099508], [71.45483661, 63.43111412, 74.64959531], [65.77027989, 48.93407409, 42.65714864]]
+box_pos = [0, 20, 60]
+axs[2].boxplot(box_data_a, positions=box_pos, widths=5)
 for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
     ax = axs[i]
     ax2 = ax.twinx()  # Create a second y-axis
@@ -72,8 +81,6 @@ for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [3.928614804, 1.29738275, 0.930636414, 1.434104449, 0.921607422, 8.651712319, 5.667095433, 17.46424628, 78.93012465], color='tab:pink', marker='x',s=10)     
             if group == 'AQDS' and product == '3H-PFPrA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 0.409865801, 0, 0.101399309, 18.49859268, 0, 0], color='tab:gray', marker='x',s=10)
-            if group == 'Pure' and product == 'PFOA':
-                ax2.boxplot([0,0,0],[116.1543409, 116.3089976, 109.3024482])
     ax.set_xlabel('Time (days)')
     ax.set_title(group)
     ax.legend(loc='upper left')
