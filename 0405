@@ -35,7 +35,7 @@ for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
         df_group = df_all[(df_all['Group'] == group) & (df_all['Degradation Product'] == product)]
         if product == 'PFOA':
             ax.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
-            ax.set_ylim(50, 125)  # Set the range for the left y-axis
+            ax.set_ylim(40, 135)  # Set the range for the left y-axis
             ax.set_ylabel('PFOA Concentration (ng/mL)')  # Set the label for the left y-axis
         else:
             ax2.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
