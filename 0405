@@ -35,7 +35,7 @@ for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
         df_group = df_all[(df_all['Group'] == group) & (df_all['Degradation Product'] == product)]
         if product == 'PFOA':
             ax.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
-            ax.set_ylim(40, 135)  # Set the range for the left y-axis
+            ax.set_ylim(40, 140)  # Set the range for the left y-axis
             ax.set_ylabel('PFOA Concentration (ng/mL)')  # Set the label for the left y-axis
         else:
             ax2.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
@@ -83,8 +83,11 @@ for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 0.409865801, 0, 0.101399309, 18.49859268, 0, 0], color='tab:gray', marker='x',s=10)
     ax.set_xlabel('Time (days)')
     ax.set_title(group)
-    ax.legend(loc='upper left')
-    ax2.legend(loc='upper right')
+    ax2.set_ylabel('Degradation Products') # Set the label for the right y-axis
+    handles, labels = [], []
+    handles, labels = ax.get_legend_handles_labels()
+    handles2, labels2 = ax2.get_legend_handles_labels()
+    ax.legend(handles + handles2, labels + labels2, loc='upper center', bbox_to_anchor=(0.65, 0.72))
 
 plt.tight_layout()
 plt.show()
