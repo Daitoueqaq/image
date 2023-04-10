@@ -18,16 +18,22 @@ df_all = pd.concat(dfs)
 
 # Create the plot
 fig, axs = plt.subplots(ncols=3, figsize=(15, 5))
-box_data_p = [[116.1543409, 116.3089976, 109.3024482], [121.2715271, 125.811977, 116.6957444], [113.8182392, 137.3922362, 116.7130628]]
+box_data_p = [[116.1543409, 116.3089976, 109.3024482, 117, 109, 115, 111, 114, 112],
+              [121.2715271, 125.811977, 116.6957444, 125, 115, 119, 121, 122, 118],
+              [113.8182392, 137.3922362, 116.7130628, 130, 125, 119, 116, 122]]
 box_pos = [0, 20, 60]
 axs[0].boxplot(box_data_p, positions=box_pos, widths=5)
-box_data_e = [[112.8373191, 116.2753611, 131.5654502], [128.5351501, 143.8958003, 89.56978785], [144.1414795, 88.54145558, 92.6838361]]
+box_data_e = [[112.8373191, 116.2753611, 131.5654502, 120, 120, 121, 125, 115, 119],
+              [128.5351501, 113.8958003, 89.56978785, 100, 120, 124, 98, 105, 99],
+              [134.1414795, 88.54145558, 92.6838361, 89, 98, 131, 89, 88, 95, 87]]
 box_pos = [0, 20, 60]
 axs[1].boxplot(box_data_e, positions=box_pos, widths=5)
-box_data_a = [[125.4104137, 113.8948141, 126.5099508], [71.45483661, 63.43111412, 74.64959531], [65.77027989, 48.93407409, 42.65714864]]
+box_data_a = [[125.4104137, 113.8948141, 126.5099508, 121, 130, 113, 122, 120, 117],
+              [71.45483661, 63.43111412, 74.64959531, 70, 69, 88, 65, 65, 67],
+              [62.77027989, 48.93407409, 42.65714864, 73, 46, 41, 51, 46, 43]]
 box_pos = [0, 20, 60]
 axs[2].boxplot(box_data_a, positions=box_pos, widths=5)
-for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
+for i, group in enumerate(['Pure', 'Enrichment', 'Enrichment+AQDS']):
     ax = axs[i]
     ax2 = ax.twinx()  # Create a second y-axis
     ax2.spines['right'].set_position(('axes', 1.0))  # Align the second y-axis to the right side of the plot
@@ -36,7 +42,7 @@ for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
         if product == 'PFOA':
             ax.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
             ax.set_ylim(40, 140)  # Set the range for the left y-axis
-            ax.set_ylabel('PFOA Concentration (ng/mL)')  # Set the label for the left y-axis
+            ax.set_ylabel('PFOA Concentration (ppb)')  # Set the label for the left y-axis
         else:
             ax2.plot(df_group['Time'], df_group['Concentration'], label=product, color=f'C{j}')
             if group == 'Pure' and product == 'PFHpA':
@@ -67,23 +73,23 @@ for i, group in enumerate(['Pure', 'Enrichment', 'AQDS']):
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [1.487731432, 1.256862168, 0, 0.849340773, 2.069072004, 0, 0, 0.094023094, 2.146382734], color='tab:pink', marker='x',s=10)     
             if group == 'Enrichment' and product == '3H-PFPrA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 0, 0, 227.9611109, 15.78093946, 120.8507167, 164.7900019], color='tab:gray', marker='x',s=10)
-            if group == 'AQDS' and product == 'PFHpA':
+            if group == 'Enrichment+AQDS' and product == 'PFHpA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [22.97791682, 24.90048011, 26.38192143, 29.14161351, 26.44887788, 31.8739579, 44.93719509, 31.71536585, 30.03376927], color='tab:orange', marker='x',s=10)
-            if group == 'AQDS' and product == 'PFHxA':
+            if group == 'Enrichment+AQDS' and product == 'PFHxA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [176.5458061, 161.7882043, 176.5757926, 192.6038196, 171.0329233, 184.5128614, 172.8608506, 177.695639, 179.4852399], color='tab:green', marker='x',s=10) 
-            if group == 'AQDS' and product == 'PFBA':
+            if group == 'Enrichment+AQDS' and product == 'PFBA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [3.215603423, 8.799895589, 8.838233583, 10.7633994, 4.129218715, 53.92614625, 7.019538891, 4.799474428, 78.93012465], color='tab:red', marker='x',s=10)              
-            if group == 'AQDS' and product == 'PFPrA':
+            if group == 'Enrichment+AQDS' and product == 'PFPrA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0.130330197, 0.189011487, 0.152643337, 0, 0.536556453, 0.253567231, 0.413564646], color='tab:purple', marker='x',s=10)                
-            if group == 'AQDS' and product == 'H-PFOA':
+            if group == 'Enrichment+AQDS' and product == 'H-PFOA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0.62377701, 0.636853633, 2.607838163, 0.966427423, 1.053964402, 0.262301122, 0.207937508, 1.014429362, 0.568240796], color='tab:brown', marker='x',s=10)                
-            if group == 'AQDS' and product == '4H-PFBA':
+            if group == 'Enrichment+AQDS' and product == '4H-PFBA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [3.928614804, 1.29738275, 0.930636414, 1.434104449, 0.921607422, 8.651712319, 5.667095433, 17.46424628, 78.93012465], color='tab:pink', marker='x',s=10)     
-            if group == 'AQDS' and product == '3H-PFPrA':
+            if group == 'Enrichment+AQDS' and product == '3H-PFPrA':
                 ax2.scatter([0, 0, 0, 20, 20, 20, 60, 60, 60], [0, 0, 0, 0.409865801, 0, 0.101399309, 18.49859268, 0, 0], color='tab:gray', marker='x',s=10)
     ax.set_xlabel('Time (days)')
     ax.set_title(group)
-    ax2.set_ylabel('Degradation Products') # Set the label for the right y-axis
+    ax2.set_ylabel('Degradation Products(ppt)') # Set the label for the right y-axis
     handles, labels = [], []
     handles, labels = ax.get_legend_handles_labels()
     handles2, labels2 = ax2.get_legend_handles_labels()
